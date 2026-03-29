@@ -132,5 +132,45 @@ namespace lab2_wpf
             e.Handled = true;
         }
 
+        private void MenuToggle_Checked(object sender, RoutedEventArgs e)
+        {
+            if (ScientificPanel == null) return;
+
+
+            DoubleAnimation widthAnim = new DoubleAnimation(80, TimeSpan.FromSeconds(0.3));
+            widthAnim.EasingFunction = new QuarticEase { EasingMode = EasingMode.EaseOut };
+
+
+            DoubleAnimation opacityAnim = new DoubleAnimation(1, TimeSpan.FromSeconds(0.3));
+
+            DoubleAnimation rotateAnim = new DoubleAnimation(90, TimeSpan.FromSeconds(0.3));
+
+            ScientificPanel.BeginAnimation(WidthProperty, widthAnim);
+            ScientificPanel.BeginAnimation(OpacityProperty, opacityAnim);
+            MenuRotate.BeginAnimation(RotateTransform.AngleProperty, rotateAnim);
+
+            MenuToggle.Content = "▼";
+        }
+
+        private void MenuToggle_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (ScientificPanel == null) return;
+
+
+            DoubleAnimation widthAnim = new DoubleAnimation(0, TimeSpan.FromSeconds(0.3));
+            widthAnim.EasingFunction = new QuarticEase { EasingMode = EasingMode.EaseIn };
+
+            DoubleAnimation opacityAnim = new DoubleAnimation(0, TimeSpan.FromSeconds(0.2));
+
+            DoubleAnimation rotateAnim = new DoubleAnimation(0, TimeSpan.FromSeconds(0.3));
+
+            ScientificPanel.BeginAnimation(WidthProperty, widthAnim);
+            ScientificPanel.BeginAnimation(OpacityProperty, opacityAnim);
+            MenuRotate.BeginAnimation(RotateTransform.AngleProperty, rotateAnim);
+
+            MenuToggle.Content = "☰";
+        }
+        private void Backspace_Click(object sender, RoutedEventArgs e) => Execute(new BackspaceCommand(this));
+
     }
 }
