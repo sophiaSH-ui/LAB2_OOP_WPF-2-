@@ -108,4 +108,67 @@ namespace lab2_wpf
 
         }
     }
+
+    public class CalculateCommand : CalculatorCommand
+    {
+        public CalculateCommand(MainWindow window) : base(window) { }
+
+        protected override void DoAction()
+        {
+            try
+            {
+                string expression = window.Display.Text.Trim();
+                if (string.IsNullOrEmpty(expression) || expression == "0") return;
+
+                int diff = expression.Count(f => f == '(') - expression.Count(f => f == ')');
+                for (int i = 0; i < diff; i++) expression += " )";
+
+                string formula = expression
+                    .Replace("×", "*").Replace("÷", "/").Replace(",", ".")
+                    .Replace("π", Math.PI.ToString(CultureInfo.InvariantCulture))
+                    .Replace("e", Math.E.ToString(CultureInfo.InvariantCulture))
+                    .Replace("√", "sqrt").Replace("ln", "ln");
+
+                double result = ExpressionParser.Evaluate(formula);
+
+                window.HistoryDisplay.Text = expression + " =";
+                window.Display.Text = result.ToString(new CultureInfo("uk-UA"));
+                window.IsNewEntry = true;
+            }
+            catch
+            {
+                window.Display.Text = "Error";
+                window.IsNewEntry = true;
+            }
+        }
+    }
+
+    public class ScientificCommand : CalculatorCommand
+    {
+        private string op;
+        public ScientificCommand(MainWindow window, string op) : base(window) { this.op = op; }
+
+        protected override void DoAction()
+        {
+            if (window.IsNewEntry) { window.Display.Text = "0"; window.HistoryDisplay.Text = ""; window.IsNewEntry = false; }
+            string text = window.Display.Text.Trim();
+
+            if (op == "π" || op == "e")
+            {
+                string val = op;
+                if (text == "0") window.Display.Text = val;
+                else if (char.IsDigit(text.Last()) || text.Last() == ')') window.Display.Text = text + " × " + val;
+                else window.Display.Text = text + " " + val;
+            }
+            else
+            {
+                if (text == "0") window.Display.Text = op + " (";
+                else if (char.IsDigit(text.Last()) || text.Last() == ')') window.Display.Text = text + " × " + op + " (";
+                else window.Display.Text = text + " " + op + " (";
+            }
+
+
+        }
+    }
+
 }
