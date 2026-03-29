@@ -34,6 +34,11 @@ namespace lab2_wpf
             window.IsNewEntry = previousIsNewEntry;
         }
 
+        public bool HasStateChanged()
+        {
+            return previousDisplay != window.Display.Text || previousHistory != window.HistoryDisplay.Text;
+        }
+
         protected abstract void DoAction();
     }
 
