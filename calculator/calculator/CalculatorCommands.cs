@@ -48,4 +48,45 @@ namespace lab2_wpf
             }
         }
     }
+
+    public class OperatorCommand : CalculatorCommand
+    {
+        private string op;
+        public OperatorCommand(MainWindow window, string op) : base(window) { this.op = op; }
+
+        protected override void DoAction()
+        {
+            if (window.Display.Text == "Error") return;
+
+            if (window.IsNewEntry) window.IsNewEntry = false;
+
+            string text = window.Display.Text.Trim();
+            char last = text.Length > 0 ? text.Last() : '\0';
+
+            if (op == "(")
+            {
+                if (text == "0" || text == "") window.Display.Text = "(";
+                else if (char.IsDigit(last) || last == ')' || last == 'π' || last == 'e')
+                    window.Display.Text = text + " × (";
+                else
+                    window.Display.Text = text + " (";
+            }
+            else
+            {
+                string[] operators = { "+", "-", "×", "÷", "^" };
+                bool endsWithOp = operators.Any(o => text.EndsWith(o));
+
+                if (endsWithOp)
+                {
+                    int lastIdx = text.LastIndexOfAny(new char[] { '+', '-', '×', '÷', '^' });
+                    window.Display.Text = text.Substring(0, lastIdx).Trim() + " " + op + " ";
+                }
+                else
+                {
+                    window.Display.Text = text + " " + op + " ";
+                }
+            }
+
+        }
+    }
 }

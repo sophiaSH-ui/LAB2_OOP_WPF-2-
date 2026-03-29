@@ -38,8 +38,7 @@
               "RelativeToolTip": "calculator\\ICalculatorCommand.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-29T13:58:45.084Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-29T13:58:45.084Z"
             },
             {
               "$type": "Document",
@@ -49,7 +48,7 @@
               "RelativeDocumentMoniker": "calculator\\CalculatorCommands.cs",
               "ToolTip": "F:\\something\\LAB2_OOP_WPF-2-\\calculator\\calculator\\CalculatorCommands.cs",
               "RelativeToolTip": "calculator\\CalculatorCommands.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAQwDIAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAADgAAAAAAAAAAAAiwEgAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-29T13:58:27.973Z",
               "EditorCaption": ""
@@ -75,8 +74,7 @@
               "RelativeToolTip": "calculator\\MainWindow.xaml.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-29T13:40:59.182Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-29T13:40:59.182Z"
             }
           ]
         },
