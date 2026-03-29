@@ -71,6 +71,25 @@ namespace lab2_wpf
                 else
                     window.Display.Text = text + " (";
             }
+            else if (op == ")")
+            {
+                string[] forbiddenBeforeClose = { "(", "+", "-", "×", "÷", "^" };
+                if (forbiddenBeforeClose.Any(o => text.EndsWith(o))) return;
+
+                int openCount = text.Count(f => f == '(');
+                int closeCount = text.Count(f => f == ')');
+                if (openCount > closeCount) window.Display.Text = text + " )";
+            }
+            else if (text.EndsWith("("))
+            {
+                if (op == "-") window.Display.Text = text + op;
+                else return;
+            }
+            else if (text == "0" || text == "")
+            {
+                if (op == "-") window.Display.Text = op;
+                else return;
+            }
             else
             {
                 string[] operators = { "+", "-", "×", "÷", "^" };
