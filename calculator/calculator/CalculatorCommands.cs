@@ -59,5 +59,78 @@ namespace lab2_wpf
         }
 
 
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space) { e.Handled = true; return; }
+
+            bool shift = Keyboard.Modifiers == ModifierKeys.Shift;
+            bool ctrl = Keyboard.Modifiers == ModifierKeys.Control;
+
+
+            if (ctrl)
+            {
+                if (e.Key == Key.Z) { Undo_Click(null, null); e.Handled = true; return; }
+                if (e.Key == Key.Y) { Redo_Click(null, null); e.Handled = true; return; }
+                return;
+            }
+
+
+            if (shift)
+            {
+                e.Handled = true;
+                if (e.Key == Key.D6) { Execute(new OperatorCommand(this, "^")); return; }
+                if (e.Key == Key.D9) { Execute(new OperatorCommand(this, "(")); return; }
+                if (e.Key == Key.D0) { Execute(new OperatorCommand(this, ")")); return; }
+                if (e.Key == Key.D8) { Execute(new OperatorCommand(this, "×")); return; }
+
+
+                if (e.Key == Key.OemPlus) { Execute(new OperatorCommand(this, "+")); return; }
+
+                e.Handled = false;
+                return;
+            }
+
+
+            if (!shift)
+            {
+
+                if (e.Key == Key.OemPlus || e.Key == Key.Enter)
+                {
+                    Execute(new CalculateCommand(this));
+                    e.Handled = true;
+                    return;
+                }
+
+                if (e.Key >= Key.D0 && e.Key <= Key.D9)
+                {
+                    Execute(new DigitCommand(this, (e.Key - Key.D0).ToString()));
+                    e.Handled = true;
+                    return;
+                }
+            }
+
+
+            if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
+                Execute(new DigitCommand(this, (e.Key - Key.NumPad0).ToString()));
+            else if (e.Key == Key.Add)
+                Execute(new OperatorCommand(this, "+"));
+            else if (e.Key == Key.Subtract || e.Key == Key.OemMinus)
+                Execute(new OperatorCommand(this, "-"));
+            else if (e.Key == Key.Multiply)
+                Execute(new OperatorCommand(this, "×"));
+            else if (e.Key == Key.Divide || e.Key == Key.OemQuestion)
+                Execute(new OperatorCommand(this, "÷"));
+            else if (e.Key == Key.Escape)
+                Execute(new ClearCommand(this));
+            else if (e.Key == Key.Decimal || e.Key == Key.OemComma || e.Key == Key.OemPeriod)
+                Execute(new DigitCommand(this, ","));
+            else if (e.Key == Key.Back)
+                Execute(new BackspaceCommand(this));
+            else
+                return;
+
+            e.Handled = true;
+        }
+
     }
 }
