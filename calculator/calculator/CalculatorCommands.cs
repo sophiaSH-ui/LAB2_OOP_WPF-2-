@@ -171,4 +171,51 @@ namespace lab2_wpf
         }
     }
 
+    public class ClearCommand : CalculatorCommand
+    {
+        public ClearCommand(MainWindow window) : base(window) { }
+        protected override void DoAction()
+        {
+            window.Display.Text = "0";
+            window.HistoryDisplay.Text = "";
+            window.IsNewEntry = true;
+        }
+    }
+
+    public class BackspaceCommand : CalculatorCommand
+    {
+        public BackspaceCommand(MainWindow window) : base(window) { }
+        protected override void DoAction()
+        {
+            if (window.IsNewEntry || window.Display.Text == "Error")
+            {
+                window.Display.Text = "0";
+                window.HistoryDisplay.Text = "";
+                window.IsNewEntry = true;
+                return;
+            }
+
+            string text = window.Display.Text;
+            if (text.Length <= 1 || text == "0")
+            {
+                window.Display.Text = "0";
+                window.IsNewEntry = true;
+            }
+            else
+            {
+                if (text.EndsWith(" "))
+                {
+                    if (text.Length >= 3) window.Display.Text = text.Substring(0, text.Length - 3);
+                    else window.Display.Text = "0";
+                }
+                else
+                {
+                    window.Display.Text = text.Substring(0, text.Length - 1);
+                }
+                if (string.IsNullOrEmpty(window.Display.Text)) window.Display.Text = "0";
+            }
+
+
+        }
+    }
 }
