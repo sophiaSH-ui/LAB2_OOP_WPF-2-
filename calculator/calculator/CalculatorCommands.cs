@@ -245,7 +245,31 @@ namespace lab2_wpf
             return left;
         }
 
-       
+        private static double ParseTerm()
+        {
+            double left = ParseExponent();
+            while (_pos < _formula.Length)
+            {
+                char op = _formula[_pos];
+                if (op != '*' && op != '/') break;
+                _pos++;
+                double right = ParseExponent();
+                if (op == '*') left *= right; else left /= right;
+            }
+            return left;
+        }
+
+        private static double ParseExponent()
+        {
+            double left = ParseFactor();
+            while (_pos < _formula.Length && _formula[_pos] == '^')
+            {
+                _pos++;
+                double right = ParseFactor();
+                left = Math.Pow(left, right);
+            }
+            return left;
+        }
 
         private static double ParseFactor()
         {
