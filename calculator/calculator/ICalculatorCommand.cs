@@ -1,12 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Windows.Controls;
 
-namespace calculator
+namespace lab2_wpf
 {
-    interface ICalculatorCommand
+    public interface ICalculatorCommand
     {
+        void Execute();
+        void Undo();
     }
+
+    public abstract class CalculatorCommand : ICalculatorCommand
+    {
+        protected MainWindow window;
+        private string previousDisplay;
+        private string previousHistory;
+        private bool previousIsNewEntry;
+
+        public CalculatorCommand(MainWindow window) { this.window = window; }
+
+        public void Execute()
+        {
+            previousDisplay = window.Display.Text;
+            previousHistory = window.HistoryDisplay.Text;
+            previousIsNewEntry = window.IsNewEntry;
+
+            DoAction();
+
+        }
+
+        public void Undo()
+        {
+            window.Display.Text = previousDisplay;
+            window.HistoryDisplay.Text = previousHistory;
+            window.IsNewEntry = previousIsNewEntry;
+        }
+
+        protected abstract void DoAction();
+    }
+
 }
