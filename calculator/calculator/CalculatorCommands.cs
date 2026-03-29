@@ -218,4 +218,86 @@ namespace lab2_wpf
 
         }
     }
-}
+
+    public static class ExpressionParser
+    {
+        private static string _formula;
+        private static int _pos;
+
+        public static double Evaluate(string formula)
+        {
+            _formula = formula.Replace(" ", "");
+            _pos = 0;
+            return ParseExpression();
+        }
+
+        private static double ParseExpression()
+        {
+            double left = ParseTerm();
+            while (_pos < _formula.Length)
+            {
+                char op = _formula[_pos];
+                if (op != '+' && op != '-') break;
+                _pos++;
+                double right = ParseTerm();
+                if (op == '+') left += right; else left -= right;
+            }
+            return left;
+        }
+
+        private static double ParseTerm()
+        {
+            double left = ParseExponent();
+            while (_pos < _formula.Length)
+            {
+                char op = _formula[_pos];
+                if (op != '*' && op != '/') break;
+                _pos++;
+                double right = ParseExponent();
+                if (op == '*') left *= right; else left /= right;
+            }
+            return left;
+        }
+
+        private static double ParseExponent()
+        {
+            double left = ParseFactor();
+            while (_pos < _formula.Length && _formula[_pos] == '^')
+            {
+                _pos++;
+                double right = ParseFactor();
+                left = Math.Pow(left, right);
+            }
+            return left;
+        }
+
+        private static double ParseFactor()
+        {
+            if (_pos >= _formula.Length) return 0;
+
+            if (_formula[_pos] == '(')
+            {
+                _pos++;
+                double result = ParseExpression();
+                if (_pos < _formula.Length && _formula[_pos] == ')') _pos++;
+                return result;
+            }
+
+            if (Char.IsLetter(_formula[_pos]))
+            {
+                int start = _pos;
+                while (_pos < _formula.Length && Char.IsLetter(_formula[_pos])) _pos++;
+                string func = _formula.Substring(start, _pos - start);
+                double arg = ParseFactor();
+                if (func == "sqrt") return Math.Sqrt(arg);
+                if (func == "ln") return Math.Log(arg);
+            }
+
+            int numStart = _pos;
+            if (_pos < _formula.Length && _formula[_pos] == '-') _pos++;
+            while (_pos < _formula.Length && (Char.IsDigit(_formula[_pos]) || _formula[_pos] == '.')) _pos++;
+
+            string numStr = _formula.Substring(numStart, _pos - numStart);
+            return double.Parse(numStr, CultureInfo.InvariantCulture);
+        }
+    }
