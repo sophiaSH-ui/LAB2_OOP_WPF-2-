@@ -30,6 +30,34 @@ namespace lab2_wpf
             }
         }
 
-       
+        private void Digit_Click(object sender, RoutedEventArgs e) => Execute(new DigitCommand(this, (sender as Button).Content.ToString()));
+        private void Op_Click(object sender, RoutedEventArgs e) => Execute(new OperatorCommand(this, (sender as Button).Content.ToString()));
+        private void Equal_Click(object sender, RoutedEventArgs e) => Execute(new CalculateCommand(this));
+        private void Clear_Click(object sender, RoutedEventArgs e) => Execute(new ClearCommand(this));
+
+        private void Scientific_Click(object sender, RoutedEventArgs e)
+        {
+            string op = (sender as Button).Content.ToString();
+            if (op == "^") Execute(new OperatorCommand(this, "^"));
+            else Execute(new ScientificCommand(this, op));
+        }
+
+        private void Undo_Click(object sender, RoutedEventArgs e)
+        {
+            if (undoStack.Count == 0) return;
+            var cmd = undoStack.Pop();
+            cmd.Undo();
+            redoStack.Push(cmd);
+        }
+
+        private void Redo_Click(object sender, RoutedEventArgs e)
+        {
+            if (redoStack.Count == 0) return;
+            var cmd = redoStack.Pop();
+            cmd.Execute();
+            undoStack.Push(cmd);
+        }
+
+
     }
 }
