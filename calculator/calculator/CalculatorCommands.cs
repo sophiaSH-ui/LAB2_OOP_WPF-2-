@@ -120,6 +120,18 @@ namespace lab2_wpf
                 string expression = window.Display.Text.Trim();
                 if (string.IsNullOrEmpty(expression) || expression == "0") return;
 
+                string[] ops = { "+", "-", "×", "÷", "^" };
+                while (ops.Any(o => expression.EndsWith(o)))
+                {
+                    int lastOpIndex = expression.LastIndexOfAny(new char[] { '+', '-', '×', '÷', '^' });
+                    if (lastOpIndex != -1)
+                    {
+                        expression = expression.Substring(0, lastOpIndex).Trim();
+                    }
+                }
+
+                if (string.IsNullOrEmpty(expression)) return; 
+
                 int diff = expression.Count(f => f == '(') - expression.Count(f => f == ')');
                 for (int i = 0; i < diff; i++) expression += " )";
 
@@ -301,3 +313,4 @@ namespace lab2_wpf
             return double.Parse(numStr, CultureInfo.InvariantCulture);
         }
     }
+}
