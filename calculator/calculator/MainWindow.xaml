@@ -1,7 +1,8 @@
 ﻿<Window x:Class="lab2_wpf.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Calculator" Height="650" Width="400" x:Name="CalcWindow"
+        Title="Calculator" Height="650" Width="400" MinWidth="400" 
+        MinHeight="650" x:Name="CalcWindow"
         PreviewKeyDown="Window_PreviewKeyDown" Focusable="True" WindowStartupLocation="CenterScreen"
         Background="#0F0F12">
 
